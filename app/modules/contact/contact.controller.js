@@ -13,7 +13,7 @@ exports.createContact = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Message sent successfully",
-      contact: result.rows[0]
+      contact: result
     });
 
   } catch (err) {
