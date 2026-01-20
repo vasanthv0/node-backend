@@ -7,5 +7,5 @@ module.exports = (app) => {
 
 
   app.post("/messageadd", contactController.createContact);
-  app.get("/api/contact", contactController.getContacts); // for admin view
+  app.get("/getcontact", contactController.getContacts); // for admin view
 };

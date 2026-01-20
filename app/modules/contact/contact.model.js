@@ -17,7 +17,7 @@ ContactModel.create = async (contact) => {
 
   try {
     return await pool.query(
-      `INSERT INTO contact (name, email,  message)
+      `INSERT INTO contact (name, email,message)
        VALUES ($1, $2, $3) RETURNING *`,
       [name, email, message]
     );
@@ -29,8 +29,11 @@ ContactModel.create = async (contact) => {
 ContactModel.getAll = async () => {
   try {
     const result = await pool.query(
-      `SELECT * FROM "contact" ORDER BY created_at DESC`
+      `SELECT * FROM contact ORDER BY id DESC`
     );
+    if (!result || !result.rows) {
+      throw new Error('No results returned from database');
+    }
     return result.rows;
   } catch (error) {
     throw new Error(`Failed to retrieve contacts: ${error.message}`);
