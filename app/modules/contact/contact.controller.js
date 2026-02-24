@@ -1,14 +1,21 @@
 const ContactModel = require("./contact.model");
 
+const { sendContactMail } = require("../../middleware/mailer");
+
 exports.createContact = async (req, res) => {
   try {
-    const { name, email, message } = req.body;
+    const { name, email, message,phone } = req.body;
 
     if (!name || !email || !message) {
-      return res.status(400).json({ message: "Name, email, and message are required" });
+      return res.status(400).json({
+        message: "Name, email, and message are required"
+      });
     }
 
     const result = await ContactModel.create({ name, email, message });
+
+    // ✅ Send Email
+    await sendContactMail({ name, email, message,phone  });
 
     res.status(201).json({
       success: true,
@@ -18,7 +25,7 @@ exports.createContact = async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: err.message || "Server error" });
   }
 };
 
